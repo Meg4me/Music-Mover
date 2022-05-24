@@ -8,7 +8,7 @@ import {
   ReferenceField,
 } from "react-admin";
 import Pagination from "../Components/Pagination";
-import { PLAYLIST_TITLE_FIELD } from "../playlist/PlaylistTitle";
+import { ORIGIN_TITLE_FIELD } from "../origin/OriginTitle";
 
 export const SongList = (props: ListProps): React.ReactElement => {
   return (
@@ -22,12 +22,8 @@ export const SongList = (props: ListProps): React.ReactElement => {
       <Datagrid rowClick="show">
         <DateField source="createdAt" label="Created At" />
         <TextField label="ID" source="id" />
-        <ReferenceField
-          label="Playlist"
-          source="playlist.id"
-          reference="Playlist"
-        >
-          <TextField source={PLAYLIST_TITLE_FIELD} />
+        <ReferenceField label="Origin" source="origin.id" reference="Origin">
+          <TextField source={ORIGIN_TITLE_FIELD} />
         </ReferenceField>
         <TextField label="Title" source="title" />
         <DateField source="updatedAt" label="Updated At" />

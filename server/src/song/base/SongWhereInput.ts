@@ -16,8 +16,9 @@ import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
 import { ArtistListRelationFilter } from "../../artist/base/ArtistListRelationFilter";
 import { StringFilter } from "../../util/StringFilter";
-import { OriginListRelationFilter } from "../../origin/base/OriginListRelationFilter";
-import { PlaylistWhereUniqueInput } from "../../playlist/base/PlaylistWhereUniqueInput";
+import { PlaylistListRelationFilter } from "../../playlist/base/PlaylistListRelationFilter";
+import { UserListRelationFilter } from "../../user/base/UserListRelationFilter";
+import { OriginWhereUniqueInput } from "../../origin/base/OriginWhereUniqueInput";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 @InputType()
 class SongWhereInput {
@@ -58,27 +59,39 @@ class SongWhereInput {
 
   @ApiProperty({
     required: false,
-    type: () => OriginListRelationFilter,
+    type: () => PlaylistListRelationFilter,
   })
   @ValidateNested()
-  @Type(() => OriginListRelationFilter)
+  @Type(() => PlaylistListRelationFilter)
   @IsOptional()
-  @Field(() => OriginListRelationFilter, {
+  @Field(() => PlaylistListRelationFilter, {
     nullable: true,
   })
-  origin?: OriginListRelationFilter;
+  inPlaylist?: PlaylistListRelationFilter;
 
   @ApiProperty({
     required: false,
-    type: () => PlaylistWhereUniqueInput,
+    type: () => UserListRelationFilter,
   })
   @ValidateNested()
-  @Type(() => PlaylistWhereUniqueInput)
+  @Type(() => UserListRelationFilter)
   @IsOptional()
-  @Field(() => PlaylistWhereUniqueInput, {
+  @Field(() => UserListRelationFilter, {
     nullable: true,
   })
-  playlist?: PlaylistWhereUniqueInput;
+  likedBy?: UserListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => OriginWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => OriginWhereUniqueInput)
+  @IsOptional()
+  @Field(() => OriginWhereUniqueInput, {
+    nullable: true,
+  })
+  origin?: OriginWhereUniqueInput;
 
   @ApiProperty({
     required: false,

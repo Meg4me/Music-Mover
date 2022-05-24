@@ -25,6 +25,10 @@ import { DeleteUserArgs } from "./DeleteUserArgs";
 import { UserFindManyArgs } from "./UserFindManyArgs";
 import { UserFindUniqueArgs } from "./UserFindUniqueArgs";
 import { User } from "./User";
+import { SongFindManyArgs } from "../../song/base/SongFindManyArgs";
+import { Song } from "../../song/base/Song";
+import { PlaylistFindManyArgs } from "../../playlist/base/PlaylistFindManyArgs";
+import { Playlist } from "../../playlist/base/Playlist";
 import { UserService } from "../user.service";
 
 @graphql.Resolver(() => User)
@@ -134,5 +138,45 @@ export class UserResolverBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [Song])
+  @nestAccessControl.UseRoles({
+    resource: "Song",
+    action: "read",
+    possession: "any",
+  })
+  async likedSongs(
+    @graphql.Parent() parent: User,
+    @graphql.Args() args: SongFindManyArgs
+  ): Promise<Song[]> {
+    const results = await this.service.findLikedSongs(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [Playlist])
+  @nestAccessControl.UseRoles({
+    resource: "Playlist",
+    action: "read",
+    possession: "any",
+  })
+  async playlists(
+    @graphql.Parent() parent: User,
+    @graphql.Args() args: PlaylistFindManyArgs
+  ): Promise<Playlist[]> {
+    const results = await this.service.findPlaylists(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 }

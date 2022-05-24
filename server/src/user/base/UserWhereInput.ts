@@ -13,8 +13,10 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { IsOptional, ValidateNested } from "class-validator";
 import { StringFilter } from "../../util/StringFilter";
+import { SongListRelationFilter } from "../../song/base/SongListRelationFilter";
+import { PlaylistListRelationFilter } from "../../playlist/base/PlaylistListRelationFilter";
 @InputType()
 class UserWhereInput {
   @ApiProperty({
@@ -49,6 +51,30 @@ class UserWhereInput {
     nullable: true,
   })
   lastName?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => SongListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => SongListRelationFilter)
+  @IsOptional()
+  @Field(() => SongListRelationFilter, {
+    nullable: true,
+  })
+  likedSongs?: SongListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => PlaylistListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => PlaylistListRelationFilter)
+  @IsOptional()
+  @Field(() => PlaylistListRelationFilter, {
+    nullable: true,
+  })
+  playlists?: PlaylistListRelationFilter;
 
   @ApiProperty({
     required: false,

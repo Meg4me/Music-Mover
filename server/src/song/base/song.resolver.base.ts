@@ -29,9 +29,11 @@ import { AlbumFindManyArgs } from "../../album/base/AlbumFindManyArgs";
 import { Album } from "../../album/base/Album";
 import { ArtistFindManyArgs } from "../../artist/base/ArtistFindManyArgs";
 import { Artist } from "../../artist/base/Artist";
-import { OriginFindManyArgs } from "../../origin/base/OriginFindManyArgs";
-import { Origin } from "../../origin/base/Origin";
+import { PlaylistFindManyArgs } from "../../playlist/base/PlaylistFindManyArgs";
 import { Playlist } from "../../playlist/base/Playlist";
+import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
+import { User } from "../../user/base/User";
+import { Origin } from "../../origin/base/Origin";
 import { SongService } from "../song.service";
 
 @graphql.Resolver(() => Song)
@@ -100,9 +102,9 @@ export class SongResolverBase {
       data: {
         ...args.data,
 
-        playlist: args.data.playlist
+        origin: args.data.origin
           ? {
-              connect: args.data.playlist,
+              connect: args.data.origin,
             }
           : undefined,
       },
@@ -123,9 +125,9 @@ export class SongResolverBase {
         data: {
           ...args.data,
 
-          playlist: args.data.playlist
+          origin: args.data.origin
             ? {
-                connect: args.data.playlist,
+                connect: args.data.origin,
               }
             : undefined,
         },
@@ -200,17 +202,17 @@ export class SongResolverBase {
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
-  @graphql.ResolveField(() => [Origin])
+  @graphql.ResolveField(() => [Playlist])
   @nestAccessControl.UseRoles({
-    resource: "Origin",
+    resource: "Playlist",
     action: "read",
     possession: "any",
   })
-  async origin(
+  async inPlaylist(
     @graphql.Parent() parent: Song,
-    @graphql.Args() args: OriginFindManyArgs
-  ): Promise<Origin[]> {
-    const results = await this.service.findOrigin(parent.id, args);
+    @graphql.Args() args: PlaylistFindManyArgs
+  ): Promise<Playlist[]> {
+    const results = await this.service.findInPlaylist(parent.id, args);
 
     if (!results) {
       return [];
@@ -220,14 +222,34 @@ export class SongResolverBase {
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
-  @graphql.ResolveField(() => Playlist, { nullable: true })
+  @graphql.ResolveField(() => [User])
   @nestAccessControl.UseRoles({
-    resource: "Playlist",
+    resource: "User",
     action: "read",
     possession: "any",
   })
-  async playlist(@graphql.Parent() parent: Song): Promise<Playlist | null> {
-    const result = await this.service.getPlaylist(parent.id);
+  async likedBy(
+    @graphql.Parent() parent: Song,
+    @graphql.Args() args: UserFindManyArgs
+  ): Promise<User[]> {
+    const results = await this.service.findLikedBy(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => Origin, { nullable: true })
+  @nestAccessControl.UseRoles({
+    resource: "Origin",
+    action: "read",
+    possession: "any",
+  })
+  async origin(@graphql.Parent() parent: Song): Promise<Origin | null> {
+    const result = await this.service.getOrigin(parent.id);
 
     if (!result) {
       return null;

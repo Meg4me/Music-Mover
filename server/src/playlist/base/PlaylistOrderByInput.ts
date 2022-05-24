@@ -34,6 +34,15 @@ class PlaylistOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
+  createdById?: SortOrder;
+
+  @ApiProperty({
+    required: false,
+    enum: ["asc", "desc"],
+  })
+  @Field(() => SortOrder, {
+    nullable: true,
+  })
   description?: SortOrder;
 
   @ApiProperty({

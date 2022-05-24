@@ -1,12 +1,14 @@
 import { AlbumCreateNestedManyWithoutSongsInput } from "./AlbumCreateNestedManyWithoutSongsInput";
 import { ArtistCreateNestedManyWithoutSongsInput } from "./ArtistCreateNestedManyWithoutSongsInput";
-import { OriginCreateNestedManyWithoutSongsInput } from "./OriginCreateNestedManyWithoutSongsInput";
-import { PlaylistWhereUniqueInput } from "../playlist/PlaylistWhereUniqueInput";
+import { PlaylistCreateNestedManyWithoutSongsInput } from "./PlaylistCreateNestedManyWithoutSongsInput";
+import { UserCreateNestedManyWithoutSongsInput } from "./UserCreateNestedManyWithoutSongsInput";
+import { OriginWhereUniqueInput } from "../origin/OriginWhereUniqueInput";
 
 export type SongCreateInput = {
   album?: AlbumCreateNestedManyWithoutSongsInput;
   artist?: ArtistCreateNestedManyWithoutSongsInput;
-  origin?: OriginCreateNestedManyWithoutSongsInput;
-  playlist?: PlaylistWhereUniqueInput | null;
+  inPlaylist?: PlaylistCreateNestedManyWithoutSongsInput;
+  likedBy?: UserCreateNestedManyWithoutSongsInput;
+  origin?: OriginWhereUniqueInput | null;
   title?: string | null;
 };

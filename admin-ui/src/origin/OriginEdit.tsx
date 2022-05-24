@@ -16,6 +16,7 @@ export const OriginEdit = (props: EditProps): React.ReactElement => {
     <Edit {...props}>
       <SimpleForm>
         <TextInput label="Description" multiline source="description" />
+        <TextInput label="Image Path" source="imagePath" />
         <TextInput label="Name" source="name" />
         <ReferenceArrayInput
           source="songs"

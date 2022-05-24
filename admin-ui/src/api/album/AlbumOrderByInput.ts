@@ -5,6 +5,7 @@ export type AlbumOrderByInput = {
   createdAt?: SortOrder;
   description?: SortOrder;
   id?: SortOrder;
+  imagePath?: SortOrder;
   title?: SortOrder;
   updatedAt?: SortOrder;
 };

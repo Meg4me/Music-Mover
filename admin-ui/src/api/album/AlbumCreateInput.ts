@@ -4,6 +4,7 @@ import { SongCreateNestedManyWithoutAlbumsInput } from "./SongCreateNestedManyWi
 export type AlbumCreateInput = {
   artist?: ArtistWhereUniqueInput | null;
   description?: string | null;
+  imagePath?: string | null;
   songs?: SongCreateNestedManyWithoutAlbumsInput;
   title?: string | null;
 };

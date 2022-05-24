@@ -49,9 +49,24 @@ export class PlaylistControllerBase {
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   async create(@common.Body() data: PlaylistCreateInput): Promise<Playlist> {
     return await this.service.create({
-      data: data,
+      data: {
+        ...data,
+
+        createdBy: data.createdBy
+          ? {
+              connect: data.createdBy,
+            }
+          : undefined,
+      },
       select: {
         createdAt: true,
+
+        createdBy: {
+          select: {
+            id: true,
+          },
+        },
+
         description: true,
         id: true,
         title: true,
@@ -76,6 +91,13 @@ export class PlaylistControllerBase {
       ...args,
       select: {
         createdAt: true,
+
+        createdBy: {
+          select: {
+            id: true,
+          },
+        },
+
         description: true,
         id: true,
         title: true,
@@ -101,6 +123,13 @@ export class PlaylistControllerBase {
       where: params,
       select: {
         createdAt: true,
+
+        createdBy: {
+          select: {
+            id: true,
+          },
+        },
+
         description: true,
         id: true,
         title: true,
@@ -132,9 +161,24 @@ export class PlaylistControllerBase {
     try {
       return await this.service.update({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          createdBy: data.createdBy
+            ? {
+                connect: data.createdBy,
+              }
+            : undefined,
+        },
         select: {
           createdAt: true,
+
+          createdBy: {
+            select: {
+              id: true,
+            },
+          },
+
           description: true,
           id: true,
           title: true,
@@ -168,6 +212,13 @@ export class PlaylistControllerBase {
         where: params,
         select: {
           createdAt: true,
+
+          createdBy: {
+            select: {
+              id: true,
+            },
+          },
+
           description: true,
           id: true,
           title: true,
@@ -203,7 +254,7 @@ export class PlaylistControllerBase {
         createdAt: true,
         id: true,
 
-        playlist: {
+        origin: {
           select: {
             id: true,
           },
