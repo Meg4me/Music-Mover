@@ -1,0 +1,19 @@
+{
+  "dataServiceGeneratorVersion": "0.12.7",
+  "appInfo": {
+    "name": "Music Web",
+    "description": "App to transfer your liked songs and playlists from Spotify to Youtube and vice versa.",
+    "version": "xmzvmvwm",
+    "id": "cl3jevoa2113524001kbn736bzpv",
+    "url": "https://server.amplication.com/cl3jevoa2113524001kbn736bzpv",
+    "settings": {
+      "dbHost": "localhost",
+      "dbName": "",
+      "dbPassword": "admin",
+      "dbPort": 5432,
+      "dbUser": "admin",
+      "appId": "cl3jevoa2113524001kbn736bzpv",
+      "authProvider": "Jwt"
+    }
+  }
+}
