@@ -7,7 +7,7 @@ import {
   TextField,
   ReferenceField,
 } from "react-admin";
-import { PLAYLIST_TITLE_FIELD } from "../playlist/PlaylistTitle";
+import { ORIGIN_TITLE_FIELD } from "../origin/OriginTitle";
 
 export const SongShow = (props: ShowProps): React.ReactElement => {
   return (
@@ -15,12 +15,8 @@ export const SongShow = (props: ShowProps): React.ReactElement => {
       <SimpleShowLayout>
         <DateField source="createdAt" label="Created At" />
         <TextField label="ID" source="id" />
-        <ReferenceField
-          label="Playlist"
-          source="playlist.id"
-          reference="Playlist"
-        >
-          <TextField source={PLAYLIST_TITLE_FIELD} />
+        <ReferenceField label="Origin" source="origin.id" reference="Origin">
+          <TextField source={ORIGIN_TITLE_FIELD} />
         </ReferenceField>
         <TextField label="Title" source="title" />
         <DateField source="updatedAt" label="Updated At" />

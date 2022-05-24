@@ -43,7 +43,7 @@ class SongOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  playlistId?: SortOrder;
+  originId?: SortOrder;
 
   @ApiProperty({
     required: false,

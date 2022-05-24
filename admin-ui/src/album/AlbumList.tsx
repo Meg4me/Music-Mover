@@ -26,6 +26,7 @@ export const AlbumList = (props: ListProps): React.ReactElement => {
         <DateField source="createdAt" label="Created At" />
         <TextField label="Description" source="description" />
         <TextField label="ID" source="id" />
+        <TextField label="Image Path" source="imagePath" />
         <TextField label="Title" source="title" />
         <DateField source="updatedAt" label="Updated At" />
       </Datagrid>

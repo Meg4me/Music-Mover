@@ -19,6 +19,7 @@ export const ArtistShow = (props: ShowProps): React.ReactElement => {
       <SimpleShowLayout>
         <DateField source="createdAt" label="Created At" />
         <TextField label="ID" source="id" />
+        <TextField label="Image Path" source="imagePath" />
         <TextField label="Name" source="name" />
         <DateField source="updatedAt" label="Updated At" />
         <ReferenceManyField reference="Album" target="ArtistId" label="Albums">
@@ -33,6 +34,7 @@ export const ArtistShow = (props: ShowProps): React.ReactElement => {
             <DateField source="createdAt" label="Created At" />
             <TextField label="Description" source="description" />
             <TextField label="ID" source="id" />
+            <TextField label="Image Path" source="imagePath" />
             <TextField label="Title" source="title" />
             <DateField source="updatedAt" label="Updated At" />
           </Datagrid>

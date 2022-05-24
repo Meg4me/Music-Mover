@@ -11,7 +11,10 @@ https://docs.amplication.com/docs/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional } from "class-validator";
+import { IsString, IsOptional, ValidateNested } from "class-validator";
+import { SongUpdateManyWithoutUsersInput } from "./SongUpdateManyWithoutUsersInput";
+import { Type } from "class-transformer";
+import { PlaylistUpdateManyWithoutUsersInput } from "./PlaylistUpdateManyWithoutUsersInput";
 @InputType()
 class UserUpdateInput {
   @ApiProperty({
@@ -38,6 +41,18 @@ class UserUpdateInput {
 
   @ApiProperty({
     required: false,
+    type: () => SongUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => SongUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => SongUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  likedSongs?: SongUpdateManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
     type: String,
   })
   @IsString()
@@ -46,6 +61,18 @@ class UserUpdateInput {
     nullable: true,
   })
   password?: string;
+
+  @ApiProperty({
+    required: false,
+    type: () => PlaylistUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => PlaylistUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => PlaylistUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  playlists?: PlaylistUpdateManyWithoutUsersInput;
 
   @ApiProperty({
     required: false,
