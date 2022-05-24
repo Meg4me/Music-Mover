@@ -10,7 +10,15 @@ https://docs.amplication.com/docs/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "nestjs-prisma";
-import { Prisma, Song, Album, Artist, Origin, Playlist } from "@prisma/client";
+import {
+  Prisma,
+  Song,
+  Album,
+  Artist,
+  Playlist,
+  User,
+  Origin,
+} from "@prisma/client";
 
 export class SongServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -69,22 +77,33 @@ export class SongServiceBase {
       .artist(args);
   }
 
-  async findOrigin(
+  async findInPlaylist(
     parentId: string,
-    args: Prisma.OriginFindManyArgs
-  ): Promise<Origin[]> {
+    args: Prisma.PlaylistFindManyArgs
+  ): Promise<Playlist[]> {
     return this.prisma.song
       .findUnique({
         where: { id: parentId },
       })
-      .origin(args);
+      .inPlaylist(args);
   }
 
-  async getPlaylist(parentId: string): Promise<Playlist | null> {
+  async findLikedBy(
+    parentId: string,
+    args: Prisma.UserFindManyArgs
+  ): Promise<User[]> {
     return this.prisma.song
       .findUnique({
         where: { id: parentId },
       })
-      .playlist();
+      .likedBy(args);
+  }
+
+  async getOrigin(parentId: string): Promise<Origin | null> {
+    return this.prisma.song
+      .findUnique({
+        where: { id: parentId },
+      })
+      .origin();
   }
 }

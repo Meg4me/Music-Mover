@@ -56,6 +56,7 @@ export class ArtistControllerBase {
       select: {
         createdAt: true,
         id: true,
+        imagePath: true,
         name: true,
         updatedAt: true,
       },
@@ -79,6 +80,7 @@ export class ArtistControllerBase {
       select: {
         createdAt: true,
         id: true,
+        imagePath: true,
         name: true,
         updatedAt: true,
       },
@@ -103,6 +105,7 @@ export class ArtistControllerBase {
       select: {
         createdAt: true,
         id: true,
+        imagePath: true,
         name: true,
         updatedAt: true,
       },
@@ -136,6 +139,7 @@ export class ArtistControllerBase {
         select: {
           createdAt: true,
           id: true,
+          imagePath: true,
           name: true,
           updatedAt: true,
         },
@@ -168,6 +172,7 @@ export class ArtistControllerBase {
         select: {
           createdAt: true,
           id: true,
+          imagePath: true,
           name: true,
           updatedAt: true,
         },
@@ -207,6 +212,7 @@ export class ArtistControllerBase {
         createdAt: true,
         description: true,
         id: true,
+        imagePath: true,
         title: true,
         updatedAt: true,
       },
@@ -304,7 +310,7 @@ export class ArtistControllerBase {
         createdAt: true,
         id: true,
 
-        playlist: {
+        origin: {
           select: {
             id: true,
           },

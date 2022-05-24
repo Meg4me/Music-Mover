@@ -10,7 +10,7 @@ https://docs.amplication.com/docs/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "nestjs-prisma";
-import { Prisma, Playlist, Song } from "@prisma/client";
+import { Prisma, Playlist, Song, User } from "@prisma/client";
 
 export class PlaylistServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -56,5 +56,13 @@ export class PlaylistServiceBase {
         where: { id: parentId },
       })
       .songs(args);
+  }
+
+  async getCreatedBy(parentId: string): Promise<User | null> {
+    return this.prisma.playlist
+      .findUnique({
+        where: { id: parentId },
+      })
+      .createdBy();
   }
 }

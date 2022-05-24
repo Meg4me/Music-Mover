@@ -11,7 +11,10 @@ https://docs.amplication.com/docs/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional } from "class-validator";
+import { IsString, IsOptional, ValidateNested } from "class-validator";
+import { SongCreateNestedManyWithoutUsersInput } from "./SongCreateNestedManyWithoutUsersInput";
+import { Type } from "class-transformer";
+import { PlaylistCreateNestedManyWithoutUsersInput } from "./PlaylistCreateNestedManyWithoutUsersInput";
 @InputType()
 class UserCreateInput {
   @ApiProperty({
@@ -37,12 +40,36 @@ class UserCreateInput {
   lastName?: string | null;
 
   @ApiProperty({
+    required: false,
+    type: () => SongCreateNestedManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => SongCreateNestedManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => SongCreateNestedManyWithoutUsersInput, {
+    nullable: true,
+  })
+  likedSongs?: SongCreateNestedManyWithoutUsersInput;
+
+  @ApiProperty({
     required: true,
     type: String,
   })
   @IsString()
   @Field(() => String)
   password!: string;
+
+  @ApiProperty({
+    required: false,
+    type: () => PlaylistCreateNestedManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => PlaylistCreateNestedManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => PlaylistCreateNestedManyWithoutUsersInput, {
+    nullable: true,
+  })
+  playlists?: PlaylistCreateNestedManyWithoutUsersInput;
 
   @ApiProperty({
     required: true,

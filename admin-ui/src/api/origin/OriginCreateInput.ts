@@ -2,6 +2,7 @@ import { SongCreateNestedManyWithoutOriginsInput } from "./SongCreateNestedManyW
 
 export type OriginCreateInput = {
   description?: string | null;
+  imagePath?: string | null;
   name?: string | null;
   songs?: SongCreateNestedManyWithoutOriginsInput;
 };

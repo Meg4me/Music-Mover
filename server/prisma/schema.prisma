@@ -8,26 +8,29 @@ generator client {
 }
 
 model User {
-  createdAt DateTime @default(now())
-  firstName String?
-  id        String   @id @default(cuid())
-  lastName  String?
-  password  String
-  roles     String[]
-  updatedAt DateTime @updatedAt
-  username  String   @unique
+  createdAt  DateTime   @default(now())
+  firstName  String?
+  id         String     @id @default(cuid())
+  lastName   String?
+  likedSongs Song[]
+  password   String
+  playlists  Playlist[]
+  roles      String[]
+  updatedAt  DateTime   @updatedAt
+  username   String     @unique
 }
 
 model Song {
   album      Album[]
   artist     Artist[]
-  createdAt  DateTime  @default(now())
-  id         String    @id @default(cuid())
-  origin     Origin[]
-  playlist   Playlist? @relation(fields: [playlistId], references: [id])
-  playlistId String?
+  createdAt  DateTime   @default(now())
+  id         String     @id @default(cuid())
+  inPlaylist Playlist[]
+  likedBy    User[]
+  origin     Origin?    @relation(fields: [originId], references: [id])
+  originId   String?
   title      String?
-  updatedAt  DateTime  @updatedAt
+  updatedAt  DateTime   @updatedAt
 }
 
 model Album {
@@ -36,6 +39,7 @@ model Album {
   createdAt   DateTime @default(now())
   description String?
   id          String   @id @default(cuid())
+  imagePath   String?
   songs       Song[]
   title       String?
   updatedAt   DateTime @updatedAt
@@ -45,6 +49,7 @@ model Artist {
   albums    Album[]
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
+  imagePath String?
   name      String?
   songs     Song[]
   updatedAt DateTime @updatedAt
@@ -52,6 +57,8 @@ model Artist {
 
 model Playlist {
   createdAt   DateTime @default(now())
+  createdBy   User?    @relation(fields: [createdById], references: [id])
+  createdById String?
   description String?
   id          String   @id @default(cuid())
   songs       Song[]
@@ -63,6 +70,7 @@ model Origin {
   createdAt   DateTime @default(now())
   description String?
   id          String   @id @default(cuid())
+  imagePath   String?
   name        String?
   songs       Song[]
   updatedAt   DateTime @updatedAt

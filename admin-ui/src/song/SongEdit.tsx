@@ -13,8 +13,9 @@ import {
 
 import { AlbumTitle } from "../album/AlbumTitle";
 import { ArtistTitle } from "../artist/ArtistTitle";
-import { OriginTitle } from "../origin/OriginTitle";
 import { PlaylistTitle } from "../playlist/PlaylistTitle";
+import { UserTitle } from "../user/UserTitle";
+import { OriginTitle } from "../origin/OriginTitle";
 
 export const SongEdit = (props: EditProps): React.ReactElement => {
   return (
@@ -37,19 +38,23 @@ export const SongEdit = (props: EditProps): React.ReactElement => {
           <SelectArrayInput optionText={ArtistTitle} />
         </ReferenceArrayInput>
         <ReferenceArrayInput
-          source="origin"
-          reference="Origin"
+          source="inPlaylist"
+          reference="Playlist"
           parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
           format={(value: any) => value && value.map((v: any) => v.id)}
         >
-          <SelectArrayInput optionText={OriginTitle} />
+          <SelectArrayInput optionText={PlaylistTitle} />
         </ReferenceArrayInput>
-        <ReferenceInput
-          source="playlist.id"
-          reference="Playlist"
-          label="Playlist"
+        <ReferenceArrayInput
+          source="likedBy"
+          reference="User"
+          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
+          format={(value: any) => value && value.map((v: any) => v.id)}
         >
-          <SelectInput optionText={PlaylistTitle} />
+          <SelectArrayInput optionText={UserTitle} />
+        </ReferenceArrayInput>
+        <ReferenceInput source="origin.id" reference="Origin" label="Origin">
+          <SelectInput optionText={OriginTitle} />
         </ReferenceInput>
         <TextInput label="Title" source="title" />
       </SimpleForm>

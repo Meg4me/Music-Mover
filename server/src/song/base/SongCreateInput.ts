@@ -15,8 +15,9 @@ import { AlbumCreateNestedManyWithoutSongsInput } from "./AlbumCreateNestedManyW
 import { ValidateNested, IsOptional, IsString } from "class-validator";
 import { Type } from "class-transformer";
 import { ArtistCreateNestedManyWithoutSongsInput } from "./ArtistCreateNestedManyWithoutSongsInput";
-import { OriginCreateNestedManyWithoutSongsInput } from "./OriginCreateNestedManyWithoutSongsInput";
-import { PlaylistWhereUniqueInput } from "../../playlist/base/PlaylistWhereUniqueInput";
+import { PlaylistCreateNestedManyWithoutSongsInput } from "./PlaylistCreateNestedManyWithoutSongsInput";
+import { UserCreateNestedManyWithoutSongsInput } from "./UserCreateNestedManyWithoutSongsInput";
+import { OriginWhereUniqueInput } from "../../origin/base/OriginWhereUniqueInput";
 @InputType()
 class SongCreateInput {
   @ApiProperty({
@@ -45,27 +46,39 @@ class SongCreateInput {
 
   @ApiProperty({
     required: false,
-    type: () => OriginCreateNestedManyWithoutSongsInput,
+    type: () => PlaylistCreateNestedManyWithoutSongsInput,
   })
   @ValidateNested()
-  @Type(() => OriginCreateNestedManyWithoutSongsInput)
+  @Type(() => PlaylistCreateNestedManyWithoutSongsInput)
   @IsOptional()
-  @Field(() => OriginCreateNestedManyWithoutSongsInput, {
+  @Field(() => PlaylistCreateNestedManyWithoutSongsInput, {
     nullable: true,
   })
-  origin?: OriginCreateNestedManyWithoutSongsInput;
+  inPlaylist?: PlaylistCreateNestedManyWithoutSongsInput;
 
   @ApiProperty({
     required: false,
-    type: () => PlaylistWhereUniqueInput,
+    type: () => UserCreateNestedManyWithoutSongsInput,
   })
   @ValidateNested()
-  @Type(() => PlaylistWhereUniqueInput)
+  @Type(() => UserCreateNestedManyWithoutSongsInput)
   @IsOptional()
-  @Field(() => PlaylistWhereUniqueInput, {
+  @Field(() => UserCreateNestedManyWithoutSongsInput, {
     nullable: true,
   })
-  playlist?: PlaylistWhereUniqueInput | null;
+  likedBy?: UserCreateNestedManyWithoutSongsInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => OriginWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => OriginWhereUniqueInput)
+  @IsOptional()
+  @Field(() => OriginWhereUniqueInput, {
+    nullable: true,
+  })
+  origin?: OriginWhereUniqueInput | null;
 
   @ApiProperty({
     required: false,

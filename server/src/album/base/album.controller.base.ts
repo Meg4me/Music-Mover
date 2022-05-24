@@ -68,6 +68,7 @@ export class AlbumControllerBase {
         createdAt: true,
         description: true,
         id: true,
+        imagePath: true,
         title: true,
         updatedAt: true,
       },
@@ -98,6 +99,7 @@ export class AlbumControllerBase {
         createdAt: true,
         description: true,
         id: true,
+        imagePath: true,
         title: true,
         updatedAt: true,
       },
@@ -129,6 +131,7 @@ export class AlbumControllerBase {
         createdAt: true,
         description: true,
         id: true,
+        imagePath: true,
         title: true,
         updatedAt: true,
       },
@@ -177,6 +180,7 @@ export class AlbumControllerBase {
           createdAt: true,
           description: true,
           id: true,
+          imagePath: true,
           title: true,
           updatedAt: true,
         },
@@ -216,6 +220,7 @@ export class AlbumControllerBase {
           createdAt: true,
           description: true,
           id: true,
+          imagePath: true,
           title: true,
           updatedAt: true,
         },
@@ -249,7 +254,7 @@ export class AlbumControllerBase {
         createdAt: true,
         id: true,
 
-        playlist: {
+        origin: {
           select: {
             id: true,
           },

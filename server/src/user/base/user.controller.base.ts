@@ -27,6 +27,12 @@ import { UserWhereUniqueInput } from "./UserWhereUniqueInput";
 import { UserFindManyArgs } from "./UserFindManyArgs";
 import { UserUpdateInput } from "./UserUpdateInput";
 import { User } from "./User";
+import { SongFindManyArgs } from "../../song/base/SongFindManyArgs";
+import { Song } from "../../song/base/Song";
+import { SongWhereUniqueInput } from "../../song/base/SongWhereUniqueInput";
+import { PlaylistFindManyArgs } from "../../playlist/base/PlaylistFindManyArgs";
+import { Playlist } from "../../playlist/base/Playlist";
+import { PlaylistWhereUniqueInput } from "../../playlist/base/PlaylistWhereUniqueInput";
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class UserControllerBase {
@@ -189,5 +195,212 @@ export class UserControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @nestAccessControl.UseRoles({
+    resource: "Song",
+    action: "read",
+    possession: "any",
+  })
+  @common.Get("/:id/likedSongs")
+  @ApiNestedQuery(SongFindManyArgs)
+  async findManyLikedSongs(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<Song[]> {
+    const query = plainToClass(SongFindManyArgs, request.query);
+    const results = await this.service.findLikedSongs(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        id: true,
+
+        origin: {
+          select: {
+            id: true,
+          },
+        },
+
+        title: true,
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  @common.Post("/:id/likedSongs")
+  async connectLikedSongs(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: SongWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      likedSongs: {
+        connect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  @common.Patch("/:id/likedSongs")
+  async updateLikedSongs(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: SongWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      likedSongs: {
+        set: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  @common.Delete("/:id/likedSongs")
+  async disconnectLikedSongs(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: SongWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      likedSongs: {
+        disconnect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @nestAccessControl.UseRoles({
+    resource: "Playlist",
+    action: "read",
+    possession: "any",
+  })
+  @common.Get("/:id/playlists")
+  @ApiNestedQuery(PlaylistFindManyArgs)
+  async findManyPlaylists(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<Playlist[]> {
+    const query = plainToClass(PlaylistFindManyArgs, request.query);
+    const results = await this.service.findPlaylists(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+
+        createdBy: {
+          select: {
+            id: true,
+          },
+        },
+
+        description: true,
+        id: true,
+        title: true,
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  @common.Post("/:id/playlists")
+  async connectPlaylists(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: PlaylistWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      playlists: {
+        connect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  @common.Patch("/:id/playlists")
+  async updatePlaylists(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: PlaylistWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      playlists: {
+        set: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  @common.Delete("/:id/playlists")
+  async disconnectPlaylists(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: PlaylistWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      playlists: {
+        disconnect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

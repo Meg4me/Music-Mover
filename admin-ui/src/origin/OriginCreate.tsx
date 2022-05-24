@@ -16,6 +16,7 @@ export const OriginCreate = (props: CreateProps): React.ReactElement => {
     <Create {...props}>
       <SimpleForm>
         <TextInput label="Description" multiline source="description" />
+        <TextInput label="Image Path" source="imagePath" />
         <TextInput label="Name" source="name" />
         <ReferenceArrayInput
           source="songs"
