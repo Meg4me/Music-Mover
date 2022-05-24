@@ -4,6 +4,7 @@ import { SongUpdateManyWithoutAlbumsInput } from "./SongUpdateManyWithoutAlbumsI
 export type AlbumUpdateInput = {
   artist?: ArtistWhereUniqueInput | null;
   description?: string | null;
+  imagePath?: string | null;
   songs?: SongUpdateManyWithoutAlbumsInput;
   title?: string | null;
 };

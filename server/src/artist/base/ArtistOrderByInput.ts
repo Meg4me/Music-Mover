@@ -43,6 +43,15 @@ class ArtistOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
+  imagePath?: SortOrder;
+
+  @ApiProperty({
+    required: false,
+    enum: ["asc", "desc"],
+  })
+  @Field(() => SortOrder, {
+    nullable: true,
+  })
   name?: SortOrder;
 
   @ApiProperty({

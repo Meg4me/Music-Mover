@@ -54,6 +54,7 @@ export class OriginControllerBase {
         createdAt: true,
         description: true,
         id: true,
+        imagePath: true,
         name: true,
         updatedAt: true,
       },
@@ -78,6 +79,7 @@ export class OriginControllerBase {
         createdAt: true,
         description: true,
         id: true,
+        imagePath: true,
         name: true,
         updatedAt: true,
       },
@@ -103,6 +105,7 @@ export class OriginControllerBase {
         createdAt: true,
         description: true,
         id: true,
+        imagePath: true,
         name: true,
         updatedAt: true,
       },
@@ -137,6 +140,7 @@ export class OriginControllerBase {
           createdAt: true,
           description: true,
           id: true,
+          imagePath: true,
           name: true,
           updatedAt: true,
         },
@@ -170,6 +174,7 @@ export class OriginControllerBase {
           createdAt: true,
           description: true,
           id: true,
+          imagePath: true,
           name: true,
           updatedAt: true,
         },
@@ -203,7 +208,7 @@ export class OriginControllerBase {
         createdAt: true,
         id: true,
 
-        playlist: {
+        origin: {
           select: {
             id: true,
           },

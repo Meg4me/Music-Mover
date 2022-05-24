@@ -15,8 +15,9 @@ import { AlbumUpdateManyWithoutSongsInput } from "./AlbumUpdateManyWithoutSongsI
 import { ValidateNested, IsOptional, IsString } from "class-validator";
 import { Type } from "class-transformer";
 import { ArtistUpdateManyWithoutSongsInput } from "./ArtistUpdateManyWithoutSongsInput";
-import { OriginUpdateManyWithoutSongsInput } from "./OriginUpdateManyWithoutSongsInput";
-import { PlaylistWhereUniqueInput } from "../../playlist/base/PlaylistWhereUniqueInput";
+import { PlaylistUpdateManyWithoutSongsInput } from "./PlaylistUpdateManyWithoutSongsInput";
+import { UserUpdateManyWithoutSongsInput } from "./UserUpdateManyWithoutSongsInput";
+import { OriginWhereUniqueInput } from "../../origin/base/OriginWhereUniqueInput";
 @InputType()
 class SongUpdateInput {
   @ApiProperty({
@@ -45,27 +46,39 @@ class SongUpdateInput {
 
   @ApiProperty({
     required: false,
-    type: () => OriginUpdateManyWithoutSongsInput,
+    type: () => PlaylistUpdateManyWithoutSongsInput,
   })
   @ValidateNested()
-  @Type(() => OriginUpdateManyWithoutSongsInput)
+  @Type(() => PlaylistUpdateManyWithoutSongsInput)
   @IsOptional()
-  @Field(() => OriginUpdateManyWithoutSongsInput, {
+  @Field(() => PlaylistUpdateManyWithoutSongsInput, {
     nullable: true,
   })
-  origin?: OriginUpdateManyWithoutSongsInput;
+  inPlaylist?: PlaylistUpdateManyWithoutSongsInput;
 
   @ApiProperty({
     required: false,
-    type: () => PlaylistWhereUniqueInput,
+    type: () => UserUpdateManyWithoutSongsInput,
   })
   @ValidateNested()
-  @Type(() => PlaylistWhereUniqueInput)
+  @Type(() => UserUpdateManyWithoutSongsInput)
   @IsOptional()
-  @Field(() => PlaylistWhereUniqueInput, {
+  @Field(() => UserUpdateManyWithoutSongsInput, {
     nullable: true,
   })
-  playlist?: PlaylistWhereUniqueInput | null;
+  likedBy?: UserUpdateManyWithoutSongsInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => OriginWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => OriginWhereUniqueInput)
+  @IsOptional()
+  @Field(() => OriginWhereUniqueInput, {
+    nullable: true,
+  })
+  origin?: OriginWhereUniqueInput | null;
 
   @ApiProperty({
     required: false,

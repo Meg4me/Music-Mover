@@ -7,6 +7,7 @@ export type AlbumWhereInput = {
   artist?: ArtistWhereUniqueInput;
   description?: StringNullableFilter;
   id?: StringFilter;
+  imagePath?: StringNullableFilter;
   songs?: SongListRelationFilter;
   title?: StringNullableFilter;
 };

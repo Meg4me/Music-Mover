@@ -22,6 +22,7 @@ export const AlbumEdit = (props: EditProps): React.ReactElement => {
           <SelectInput optionText={ArtistTitle} />
         </ReferenceInput>
         <TextInput label="Description" multiline source="description" />
+        <TextInput label="Image Path" source="imagePath" />
         <ReferenceArrayInput
           source="songs"
           reference="Song"

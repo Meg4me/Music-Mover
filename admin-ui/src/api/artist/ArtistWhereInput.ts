@@ -6,6 +6,7 @@ import { SongListRelationFilter } from "../song/SongListRelationFilter";
 export type ArtistWhereInput = {
   albums?: AlbumListRelationFilter;
   id?: StringFilter;
+  imagePath?: StringNullableFilter;
   name?: StringNullableFilter;
   songs?: SongListRelationFilter;
 };

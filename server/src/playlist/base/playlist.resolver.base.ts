@@ -27,6 +27,7 @@ import { PlaylistFindUniqueArgs } from "./PlaylistFindUniqueArgs";
 import { Playlist } from "./Playlist";
 import { SongFindManyArgs } from "../../song/base/SongFindManyArgs";
 import { Song } from "../../song/base/Song";
+import { User } from "../../user/base/User";
 import { PlaylistService } from "../playlist.service";
 
 @graphql.Resolver(() => Playlist)
@@ -98,7 +99,15 @@ export class PlaylistResolverBase {
   ): Promise<Playlist> {
     return await this.service.create({
       ...args,
-      data: args.data,
+      data: {
+        ...args.data,
+
+        createdBy: args.data.createdBy
+          ? {
+              connect: args.data.createdBy,
+            }
+          : undefined,
+      },
     });
   }
 
@@ -115,7 +124,15 @@ export class PlaylistResolverBase {
     try {
       return await this.service.update({
         ...args,
-        data: args.data,
+        data: {
+          ...args.data,
+
+          createdBy: args.data.createdBy
+            ? {
+                connect: args.data.createdBy,
+              }
+            : undefined,
+        },
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -166,5 +183,21 @@ export class PlaylistResolverBase {
     }
 
     return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => User, { nullable: true })
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "read",
+    possession: "any",
+  })
+  async createdBy(@graphql.Parent() parent: Playlist): Promise<User | null> {
+    const result = await this.service.getCreatedBy(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 }

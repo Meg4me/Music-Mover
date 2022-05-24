@@ -15,8 +15,9 @@ import { Album } from "../../album/base/Album";
 import { ValidateNested, IsOptional, IsDate, IsString } from "class-validator";
 import { Type } from "class-transformer";
 import { Artist } from "../../artist/base/Artist";
-import { Origin } from "../../origin/base/Origin";
 import { Playlist } from "../../playlist/base/Playlist";
+import { User } from "../../user/base/User";
+import { Origin } from "../../origin/base/Origin";
 @ObjectType()
 class Song {
   @ApiProperty({
@@ -55,21 +56,30 @@ class Song {
 
   @ApiProperty({
     required: false,
-    type: () => [Origin],
-  })
-  @ValidateNested()
-  @Type(() => Origin)
-  @IsOptional()
-  origin?: Array<Origin>;
-
-  @ApiProperty({
-    required: false,
-    type: () => Playlist,
+    type: () => [Playlist],
   })
   @ValidateNested()
   @Type(() => Playlist)
   @IsOptional()
-  playlist?: Playlist | null;
+  inPlaylist?: Array<Playlist>;
+
+  @ApiProperty({
+    required: false,
+    type: () => [User],
+  })
+  @ValidateNested()
+  @Type(() => User)
+  @IsOptional()
+  likedBy?: Array<User>;
+
+  @ApiProperty({
+    required: false,
+    type: () => Origin,
+  })
+  @ValidateNested()
+  @Type(() => Origin)
+  @IsOptional()
+  origin?: Origin | null;
 
   @ApiProperty({
     required: false,

@@ -1,15 +1,17 @@
 import { AlbumListRelationFilter } from "../album/AlbumListRelationFilter";
 import { ArtistListRelationFilter } from "../artist/ArtistListRelationFilter";
 import { StringFilter } from "../../util/StringFilter";
-import { OriginListRelationFilter } from "../origin/OriginListRelationFilter";
-import { PlaylistWhereUniqueInput } from "../playlist/PlaylistWhereUniqueInput";
+import { PlaylistListRelationFilter } from "../playlist/PlaylistListRelationFilter";
+import { UserListRelationFilter } from "../user/UserListRelationFilter";
+import { OriginWhereUniqueInput } from "../origin/OriginWhereUniqueInput";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 
 export type SongWhereInput = {
   album?: AlbumListRelationFilter;
   artist?: ArtistListRelationFilter;
   id?: StringFilter;
-  origin?: OriginListRelationFilter;
-  playlist?: PlaylistWhereUniqueInput;
+  inPlaylist?: PlaylistListRelationFilter;
+  likedBy?: UserListRelationFilter;
+  origin?: OriginWhereUniqueInput;
   title?: StringNullableFilter;
 };

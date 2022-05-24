@@ -33,9 +33,12 @@ import { AlbumWhereUniqueInput } from "../../album/base/AlbumWhereUniqueInput";
 import { ArtistFindManyArgs } from "../../artist/base/ArtistFindManyArgs";
 import { Artist } from "../../artist/base/Artist";
 import { ArtistWhereUniqueInput } from "../../artist/base/ArtistWhereUniqueInput";
-import { OriginFindManyArgs } from "../../origin/base/OriginFindManyArgs";
-import { Origin } from "../../origin/base/Origin";
-import { OriginWhereUniqueInput } from "../../origin/base/OriginWhereUniqueInput";
+import { PlaylistFindManyArgs } from "../../playlist/base/PlaylistFindManyArgs";
+import { Playlist } from "../../playlist/base/Playlist";
+import { PlaylistWhereUniqueInput } from "../../playlist/base/PlaylistWhereUniqueInput";
+import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
+import { User } from "../../user/base/User";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class SongControllerBase {
@@ -58,9 +61,9 @@ export class SongControllerBase {
       data: {
         ...data,
 
-        playlist: data.playlist
+        origin: data.origin
           ? {
-              connect: data.playlist,
+              connect: data.origin,
             }
           : undefined,
       },
@@ -68,7 +71,7 @@ export class SongControllerBase {
         createdAt: true,
         id: true,
 
-        playlist: {
+        origin: {
           select: {
             id: true,
           },
@@ -98,7 +101,7 @@ export class SongControllerBase {
         createdAt: true,
         id: true,
 
-        playlist: {
+        origin: {
           select: {
             id: true,
           },
@@ -129,7 +132,7 @@ export class SongControllerBase {
         createdAt: true,
         id: true,
 
-        playlist: {
+        origin: {
           select: {
             id: true,
           },
@@ -167,9 +170,9 @@ export class SongControllerBase {
         data: {
           ...data,
 
-          playlist: data.playlist
+          origin: data.origin
             ? {
-                connect: data.playlist,
+                connect: data.origin,
               }
             : undefined,
         },
@@ -177,7 +180,7 @@ export class SongControllerBase {
           createdAt: true,
           id: true,
 
-          playlist: {
+          origin: {
             select: {
               id: true,
             },
@@ -216,7 +219,7 @@ export class SongControllerBase {
           createdAt: true,
           id: true,
 
-          playlist: {
+          origin: {
             select: {
               id: true,
             },
@@ -261,6 +264,7 @@ export class SongControllerBase {
         createdAt: true,
         description: true,
         id: true,
+        imagePath: true,
         title: true,
         updatedAt: true,
       },
@@ -357,6 +361,7 @@ export class SongControllerBase {
       select: {
         createdAt: true,
         id: true,
+        imagePath: true,
         name: true,
         updatedAt: true,
       },
@@ -437,24 +442,31 @@ export class SongControllerBase {
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
   @nestAccessControl.UseRoles({
-    resource: "Origin",
+    resource: "Playlist",
     action: "read",
     possession: "any",
   })
-  @common.Get("/:id/origin")
-  @ApiNestedQuery(OriginFindManyArgs)
-  async findManyOrigin(
+  @common.Get("/:id/inPlaylist")
+  @ApiNestedQuery(PlaylistFindManyArgs)
+  async findManyInPlaylist(
     @common.Req() request: Request,
     @common.Param() params: SongWhereUniqueInput
-  ): Promise<Origin[]> {
-    const query = plainToClass(OriginFindManyArgs, request.query);
-    const results = await this.service.findOrigin(params.id, {
+  ): Promise<Playlist[]> {
+    const query = plainToClass(PlaylistFindManyArgs, request.query);
+    const results = await this.service.findInPlaylist(params.id, {
       ...query,
       select: {
         createdAt: true,
+
+        createdBy: {
+          select: {
+            id: true,
+          },
+        },
+
         description: true,
         id: true,
-        name: true,
+        title: true,
         updatedAt: true,
       },
     });
@@ -471,13 +483,13 @@ export class SongControllerBase {
     action: "update",
     possession: "any",
   })
-  @common.Post("/:id/origin")
-  async connectOrigin(
+  @common.Post("/:id/inPlaylist")
+  async connectInPlaylist(
     @common.Param() params: SongWhereUniqueInput,
-    @common.Body() body: OriginWhereUniqueInput[]
+    @common.Body() body: PlaylistWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      origin: {
+      inPlaylist: {
         connect: body,
       },
     };
@@ -493,13 +505,13 @@ export class SongControllerBase {
     action: "update",
     possession: "any",
   })
-  @common.Patch("/:id/origin")
-  async updateOrigin(
+  @common.Patch("/:id/inPlaylist")
+  async updateInPlaylist(
     @common.Param() params: SongWhereUniqueInput,
-    @common.Body() body: OriginWhereUniqueInput[]
+    @common.Body() body: PlaylistWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      origin: {
+      inPlaylist: {
         set: body,
       },
     };
@@ -515,13 +527,112 @@ export class SongControllerBase {
     action: "update",
     possession: "any",
   })
-  @common.Delete("/:id/origin")
-  async disconnectOrigin(
+  @common.Delete("/:id/inPlaylist")
+  async disconnectInPlaylist(
     @common.Param() params: SongWhereUniqueInput,
-    @common.Body() body: OriginWhereUniqueInput[]
+    @common.Body() body: PlaylistWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      origin: {
+      inPlaylist: {
+        disconnect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "read",
+    possession: "any",
+  })
+  @common.Get("/:id/likedBy")
+  @ApiNestedQuery(UserFindManyArgs)
+  async findManyLikedBy(
+    @common.Req() request: Request,
+    @common.Param() params: SongWhereUniqueInput
+  ): Promise<User[]> {
+    const query = plainToClass(UserFindManyArgs, request.query);
+    const results = await this.service.findLikedBy(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        firstName: true,
+        id: true,
+        lastName: true,
+        roles: true,
+        updatedAt: true,
+        username: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @nestAccessControl.UseRoles({
+    resource: "Song",
+    action: "update",
+    possession: "any",
+  })
+  @common.Post("/:id/likedBy")
+  async connectLikedBy(
+    @common.Param() params: SongWhereUniqueInput,
+    @common.Body() body: UserWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      likedBy: {
+        connect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @nestAccessControl.UseRoles({
+    resource: "Song",
+    action: "update",
+    possession: "any",
+  })
+  @common.Patch("/:id/likedBy")
+  async updateLikedBy(
+    @common.Param() params: SongWhereUniqueInput,
+    @common.Body() body: UserWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      likedBy: {
+        set: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @nestAccessControl.UseRoles({
+    resource: "Song",
+    action: "update",
+    possession: "any",
+  })
+  @common.Delete("/:id/likedBy")
+  async disconnectLikedBy(
+    @common.Param() params: SongWhereUniqueInput,
+    @common.Body() body: UserWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      likedBy: {
         disconnect: body,
       },
     };
